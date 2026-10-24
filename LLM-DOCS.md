@@ -23,7 +23,7 @@ So the only source for client setup is the HTML page. It is 104,669 bytes, of wh
 
 **llms.txt is the place agents look.** [llmstxt.org](https://llmstxt.org) (Jeremy Howard, first published September 2024, v2 August 2026) proposes a markdown file at `/llms.txt` with an H1, a one-paragraph summary in a blockquote, and H2 sections listing links to markdown pages, so an agent can read the index and fetch only the page it needs. It also proposes a markdown copy of each page at the same URL with `.md`, linked from the HTML with `rel="alternate" type="text/markdown"`, and `rel="describedby"` pointing to the llms.txt. Anthropic (`docs.anthropic.com/llms.txt`), OpenAI (`platform.openai.com/docs/llms.txt`) and OpenCode (`opencode.ai/llms.txt`) publish one, and so does Decision Models (`decisionmodels.io/llms.txt`), another inference host on models.dev. The proposal says Chrome's Lighthouse checks for one in its agentic-browsing audits; we have not checked that ourselves.
 
-**The two files are small.** `llms.txt` is 2,041 bytes and `docs/opencode.md` 2,351 bytes, against 104,669 for the HTML page.
+**The two files are small.** `llms.txt` is 2,050 bytes and `docs/opencode.md` 2,983 bytes, against 104,669 for the HTML page.
 
 ## Control test: today's docs only
 
@@ -31,7 +31,7 @@ The same task was given to a fresh agent (Claude Sonnet) with only `https://engy
 
 | | Today's engy.ai/docs | `llms.txt` + `docs/opencode.md` |
 |---|---|---|
-| OpenCode 1.19.4 | Works: default model used, `--variant max` answered, `off` gave 0 reasoning tokens. Every OpenCode part was marked as a guess from the agent's own knowledge of OpenCode 1, and it redefined engy as a custom provider (`npm`, `baseURL`, `apiKey`) although engy is built in. | Works, with a config a third the size and nothing guessed. |
+| OpenCode 1.19.4 | Works: default model used, `--variant max` answered, `off` gave 0 reasoning tokens. Every OpenCode part was marked as a guess from the agent's own knowledge of OpenCode 1, and it redefined engy as a custom provider (`npm`, `baseURL`, `apiKey`) although engy is built in. | Works, with a config less than half the size (167 against 387 characters, minified) and nothing guessed. |
 | OpenCode 2.0.29 | 2 of 3 commands fail: `Unrecognized flag: --variant`. The agent assumed OpenCode 2 works like 1. | All three work. |
 
 So an agent can already get OpenCode 1 working from what it knows about OpenCode, but not from engy's docs, and it gets OpenCode 2 wrong. The proposed files close both gaps.
