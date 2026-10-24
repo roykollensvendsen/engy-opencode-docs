@@ -74,4 +74,4 @@ The files for agents were tested by giving a fresh agent (Claude Sonnet, no othe
 
 ## Cost
 
-About 20 requests to engy in all, a fraction of a cent.
+About 30 requests to engy in all, a fraction of a cent.
