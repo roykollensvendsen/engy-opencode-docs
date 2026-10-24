@@ -52,11 +52,24 @@ Run with engy's API key against the published catalogue, each OpenCode build ins
 - `opencode models` lists all nine engy models.
 - `engy/glm-5.2#max` answered.
 - `engy/qwen3.8-27b#high` was refused with "Variant unavailable", so the tab says an unknown name is an error.
+- `"model": "engy/glm-5.2"` in a project `opencode.jsonc` was used when no `--model` was given.
+- The custom variant `{ "id": "off", "settings": { "reasoningEffort": "none" } }` on `engy/qwen3.8-27b`: 0 reasoning tokens.
+
+## Agent test
+
+The files for agents were tested by giving a fresh agent (Claude Sonnet, no other context) only `llms.txt` and `docs/opencode.md` and asking it for an OpenCode config with a default model and an `off` variant, plus the commands to run GLM-5.2 at its highest level and Qwen3.8 with `off`, for both versions.
+
+- Round 1: its configs and commands were correct, and the OpenCode 1 ones were run on 1.19.4 as written: the default model was used, `--variant max` answered, `off` gave 0 reasoning tokens, and the added variant showed up next to the built-in ones. It listed what it had to guess: which variant is highest, whether added variants replace the built-in ones, where OpenCode 2 keeps its config, what `opencode run` does, and quoting `#` in the shell. Each was answered in `docs/opencode.md` and the HTML section.
+- Round 2, a new agent on the fixed files: the same correct output, without those guesses. Its remaining notes were whether the default model and variants can share a file, whether OpenCode 2 also reads `opencode.json`, and why Qwen3.8 stops at `xhigh`; those are now stated too.
+
+## Format and layout
+
+- `llms.txt` parses with the reference parser from llmstxt.org (`pip install llms-txt`, version 0.0.7): title `engy`, the summary, details, and the sections Clients (6 links), API features (6) and Optional (4).
+- `index.html` was rendered with headless Chromium at 1280 px in light and dark mode and at 390 px. At 390 px long inline code ran off the screen; it now wraps, and only code blocks scroll sideways.
 
 ## Not tested
 
 - `/connect` itself, which is interactive. Both runs used `ENGY_API_KEY` instead.
-- The OpenCode 2 custom variant example. It follows OpenCode 2's docs (`models.mdx`, "Variants"), but has not been run.
 - Windows paths. The paths shown are the Linux and macOS defaults from OpenCode's docs.
 
 ## Cost

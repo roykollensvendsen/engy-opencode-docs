@@ -19,7 +19,7 @@ OpenCode 1.x, `~/.config/opencode/opencode.json` or `opencode.json` in a project
 { "$schema": "https://opencode.ai/config.json", "model": "engy/glm-5.2" }
 ```
 
-OpenCode 2.x: the same content in `~/.config/opencode/opencode.jsonc` or `opencode.jsonc` in a project; the `$schema` URL is the same.
+OpenCode 2.x: the same content in `~/.config/opencode/opencode.json` or `.jsonc`, or in the project; the `$schema` URL is the same. In both versions `model` stays a plain `engy/<id>` string, and the default model and the variant blocks below can go in the same file.
 
 ## Reasoning effort (variants)
 
@@ -30,7 +30,7 @@ Variants come from the catalogue and are the same in both versions. Each list ru
 | `glm-5.2` | `high`, `max` |
 | `glm-5.3`, `glm-5.3-flash` | `low`, `high`, `max` |
 | `deepseek-v4-flash-0731`, `deepseek-v4.1-flash`, `deepseek-v4.1-flash-1017` | `low`, `high`, `max` |
-| `qwen3.8-27b` | `low`, `medium`, `xhigh` |
+| `qwen3.8-27b` | `low`, `medium`, `xhigh` (its top level; engy maps `max` to `xhigh` for it) |
 | `kimi-k3`, `qwen3.6-35b-a3b` | none (thinking is on/off only) |
 
 `opencode run` sends one prompt and exits; `"…"` stands for the prompt.
