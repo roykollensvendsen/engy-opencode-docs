@@ -25,6 +25,17 @@ So the only source for client setup is the HTML page. It is 104,669 bytes, of wh
 
 **The two files are small.** `llms.txt` is 2,041 bytes and `docs/opencode.md` 2,351 bytes, against 104,669 for the HTML page.
 
+## Control test: today's docs only
+
+The same task was given to a fresh agent (Claude Sonnet) with only `https://engy.ai/docs` and the pages it links on engy's domains, told to mark anything not from the docs as a guess. What it wrote was run the same way as for the proposed files (2026-10-24):
+
+| | Today's engy.ai/docs | `llms.txt` + `docs/opencode.md` |
+|---|---|---|
+| OpenCode 1.19.4 | Works: default model used, `--variant max` answered, `off` gave 0 reasoning tokens. Every OpenCode part was marked as a guess from the agent's own knowledge of OpenCode 1, and it redefined engy as a custom provider (`npm`, `baseURL`, `apiKey`) although engy is built in. | Works, with a config a third the size and nothing guessed. |
+| OpenCode 2.0.29 | 2 of 3 commands fail: `Unrecognized flag: --variant`. The agent assumed OpenCode 2 works like 1. | All three work. |
+
+So an agent can already get OpenCode 1 working from what it knows about OpenCode, but not from engy's docs, and it gets OpenCode 2 wrong. The proposed files close both gaps.
+
 ## What the files do differently from the HTML page
 
 - **No tabs.** An agent cannot click the OpenCode 1 / OpenCode 2 switch. `docs/opencode.md` states both versions side by side and says to run `opencode --version` first, because the config shape and the way a variant is picked differ.

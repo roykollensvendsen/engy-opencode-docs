@@ -62,6 +62,8 @@ The files for agents were tested by giving a fresh agent (Claude Sonnet, no othe
 - Round 1: its configs and commands were correct, and the OpenCode 1 ones were run on 1.19.4 as written: the default model was used, `--variant max` answered, `off` gave 0 reasoning tokens, and the added variant showed up next to the built-in ones. It listed what it had to guess: which variant is highest, whether added variants replace the built-in ones, where OpenCode 2 keeps its config, what `opencode run` does, and quoting `#` in the shell. Each was answered in `docs/opencode.md` and the HTML section.
 - Round 2, a new agent on the fixed files: the same correct output, without those guesses. Its remaining notes were whether the default model and variants can share a file, whether OpenCode 2 also reads `opencode.json`, and why Qwen3.8 stops at `xhigh`; those are now stated too.
 
+- Control: a fresh agent with only `https://engy.ai/docs` (no OpenCode section today) guessed every OpenCode detail. Its OpenCode 1 config redefined engy as a custom provider and worked on 1.19.4; on 2.0.29 its `--variant` commands failed with `Unrecognized flag: --variant`. See `LLM-DOCS.md`, "Control test".
+
 ## Format and layout
 
 - `llms.txt` parses with the reference parser from llmstxt.org (`pip install llms-txt`, version 0.0.7): title `engy`, the summary, details, and the sections Clients (6 links), API features (6) and Optional (4).
@@ -74,4 +76,4 @@ The files for agents were tested by giving a fresh agent (Claude Sonnet, no othe
 
 ## Cost
 
-About 30 requests to engy in all, a fraction of a cent.
+About 35 requests to engy in all, a fraction of a cent.
