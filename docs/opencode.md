@@ -1,6 +1,6 @@
 # Using engy with OpenCode
 
-engy is in OpenCode's built-in provider list (its catalogue comes from models.dev), so no base URL is needed. Provider id: `engy`. Key variable: `ENGY_API_KEY`. Model ids: `engy/<id>`, with `<id>` from `GET https://api.engy.ai/v1/models`.
+engy is in OpenCode's built-in provider list (its catalogue comes from models.dev), so no base URL is needed. Provider id: `engy`. Key variable: `ENGY_API_KEY` (an `sk-engy-…` key from the engy dashboard). Model ids: `engy/<id>`, with `<id>` from `GET https://api.engy.ai/v1/models`.
 
 Check the version first with `opencode --version`. OpenCode 1.x and 2.x differ in config shape and in how a variant is picked.
 
@@ -19,11 +19,11 @@ OpenCode 1.x, `~/.config/opencode/opencode.json` or `opencode.json` in a project
 { "$schema": "https://opencode.ai/config.json", "model": "engy/glm-5.2" }
 ```
 
-OpenCode 2.x: the same, in `opencode.jsonc`.
+OpenCode 2.x: the same content in `~/.config/opencode/opencode.jsonc` or `opencode.jsonc` in a project; the `$schema` URL is the same.
 
 ## Reasoning effort (variants)
 
-Variants come from the catalogue and are the same in both versions:
+Variants come from the catalogue and are the same in both versions. Each list runs from lowest to highest, so the last one is the most effort:
 
 | Model | Variants |
 |---|---|
@@ -33,12 +33,14 @@ Variants come from the catalogue and are the same in both versions:
 | `qwen3.8-27b` | `low`, `medium`, `xhigh` |
 | `kimi-k3`, `qwen3.6-35b-a3b` | none (thinking is on/off only) |
 
+`opencode run` sends one prompt and exits; `"…"` stands for the prompt.
+
 - OpenCode 1.x: `opencode run --model engy/glm-5.2 --variant max "…"`, or `ctrl+t` in the TUI. An unknown variant name is ignored and the model runs at its default.
-- OpenCode 2.x: `opencode run --model engy/glm-5.2#max "…"`. An unknown variant name is an error.
+- OpenCode 2.x: `opencode run --model 'engy/glm-5.2#max' "…"` (quoting the model keeps every shell from treating `#` specially). An unknown variant name is an error.
 
 ## Adding a variant
 
-The value is sent as `reasoning_effort`. Example: a variant that turns thinking off (works on every model except `glm-5.3` and `glm-5.3-flash`).
+A variant you add is listed next to the catalogue's ones; it does not replace them. The value is sent as `reasoning_effort`. Example: a variant that turns thinking off (works on every model except `glm-5.3` and `glm-5.3-flash`).
 
 OpenCode 1.x:
 
@@ -68,4 +70,4 @@ OpenCode 2.x:
 }
 ```
 
-Use it as `--variant off` (1.x) or `engy/qwen3.8-27b#off` (2.x).
+Use it as `--variant off` (1.x) or `--model 'engy/qwen3.8-27b#off'` (2.x).
