@@ -69,6 +69,79 @@ p{margin:8px 0}
   <h2 id="cursor">Cursor</h2><div class="placeholder">engy's existing Cursor section.</div>
   <h2 id="codex">Codex</h2><div class="placeholder">engy's existing Codex section.</div>
 
+  <section class="new" id="opencode">
+    <h2 style="border-top:none;margin-top:40px">OpenCode <span class="tag">new</span></h2>
+    <div class="tabs" role="tablist" aria-label="OpenCode version">
+      <button class="tab" role="tab" aria-selected="true" data-v="v1" type="button">OpenCode 1 (current release)</button>
+      <button class="tab" role="tab" aria-selected="false" data-v="v2" type="button">OpenCode 2</button>
+    </div>
+
+    <div data-show="v1">
+      <p>engy is in OpenCode's provider list, so there is no base URL to set. Run <code>opencode</code>, then:</p>
+<pre><code>/connect      ← pick engy, paste your API key
+/models       ← pick an engy model</code></pre>
+      <p><code>/connect</code> saves the key in <code>~/.local/share/opencode/auth.json</code>. To use an environment variable instead, <code>export ENGY_API_KEY=…</code> before you start <code>opencode</code>.</p>
+      <p>To make an engy model the default, in <code>~/.config/opencode/opencode.json</code> (or <code>opencode.json</code> in a project):</p>
+<pre><code>{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "engy/glm-5.2"
+}</code></pre>
+      <p>Model ids are <code>engy/</code> plus an id from the models list: <code>engy/kimi-k3</code>, <code>engy/qwen3.8-27b</code>, <code>engy/deepseek-v4.1-flash</code>. OpenCode reads each model's context window and price from its catalog, so there is no suffix to add as with Claude Code.</p>
+      <p><b>Reasoning effort is a variant.</b> Press <code>ctrl+t</code> in the TUI to cycle through a model's variants, or pass one on the command line:</p>
+<pre><code>opencode run --model engy/glm-5.2 --variant max "Review this migration"</code></pre>
+      <p>The variants are the levels each model takes: <code>high</code> and <code>max</code> on GLM-5.2; <code>low</code>, <code>high</code> and <code>max</code> on GLM-5.3 and DeepSeek; <code>low</code>, <code>medium</code> and <code>xhigh</code> on Qwen3.8. Kimi-K3 and Qwen3.6 only switch thinking on or off, so they have none. A name that is not in the list is ignored and the model runs at its default. Add your own in the config; the value is sent as <code>reasoning_effort</code>, and engy maps it as shown in <a href="#reasoning-effort">What each model hears</a>:</p>
+<pre><code>{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "engy": {
+      "models": {
+        "qwen3.8-27b": {
+          "variants": {
+            "off": { "reasoningEffort": "none" }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+      <p><code>off</code> works on every model except GLM-5.3 and GLM-5.3-Flash, which cannot turn thinking off (see <a href="#reasoning-effort">Turning thinking off</a>).</p>
+    </div>
+
+    <div data-show="v2" hidden>
+      <p>engy is in OpenCode's provider list, so there is no base URL to set. Run <code>opencode</code>, then:</p>
+<pre><code>/connect      ← pick engy, paste your API key
+/models       ← pick an engy model</code></pre>
+      <p>OpenCode 2 runs models from a background server, so an environment variable has to be given to that server rather than exported in your shell:</p>
+<pre><code>opencode service set env ENGY_API_KEY …</code></pre>
+      <p>To make an engy model the default, in <code>~/.config/opencode/opencode.jsonc</code> (or <code>opencode.jsonc</code> in a project):</p>
+<pre><code>{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "engy/glm-5.2"
+}</code></pre>
+      <p>Model ids are <code>engy/</code> plus an id from the models list: <code>engy/kimi-k3</code>, <code>engy/qwen3.8-27b</code>, <code>engy/deepseek-v4.1-flash</code>. OpenCode reads each model's context window and price from its catalog, so there is no suffix to add as with Claude Code.</p>
+      <p><b>Reasoning effort is a variant.</b> Add it after the model id with <code>#</code>:</p>
+<pre><code>opencode run --model engy/glm-5.2#max "Review this migration"</code></pre>
+      <p>The variants are the levels each model takes: <code>high</code> and <code>max</code> on GLM-5.2; <code>low</code>, <code>high</code> and <code>max</code> on GLM-5.3 and DeepSeek; <code>low</code>, <code>medium</code> and <code>xhigh</code> on Qwen3.8. Kimi-K3 and Qwen3.6 only switch thinking on or off, so they have none. A name that is not in the list is an error. Add your own in the config; the value is sent as <code>reasoning_effort</code>, and engy maps it as shown in <a href="#reasoning-effort">What each model hears</a>:</p>
+<pre><code>{
+  "$schema": "https://opencode.ai/config.json",
+  "providers": {
+    "engy": {
+      "models": {
+        "qwen3.8-27b": {
+          "variants": [
+            { "id": "off", "settings": { "reasoningEffort": "none" } }
+          ]
+        }
+      }
+    }
+  }
+}</code></pre>
+      <p>Then use <code>engy/qwen3.8-27b#off</code>. It works on every model except GLM-5.3 and GLM-5.3-Flash, which cannot turn thinking off (see <a href="#reasoning-effort">Turning thinking off</a>).</p>
+    </div>
+
+    <div class="tested" data-show="v1"><b>Tested 2026-10-24 on OpenCode 1.19.4:</b> all nine engy models listed and answered; the variants above are what OpenCode built from the catalog; <code>--variant max</code> and the default model from <code>opencode.json</code> work; the <code>off</code> variant gave 0 reasoning tokens.</div>
+    <div class="tested" data-show="v2" hidden><b>Tested 2026-10-24 on OpenCode 2.0.29:</b> all nine engy models listed; <code>engy/glm-5.2#max</code> answered; <code>engy/qwen3.8-27b#high</code> was refused as unavailable. The custom <code>off</code> variant follows OpenCode 2's docs and has not been run yet.</div>
+  </section>
 
   <h2 id="hermes">Hermes</h2><div class="placeholder">engy's existing Hermes section.</div>
   <h2 id="reasoning-effort">Reasoning effort</h2><div class="placeholder">engy's existing Reasoning effort section, including "What each model hears" and "Turning thinking off".</div>
@@ -81,6 +154,7 @@ p{margin:8px 0}
   <a href="#openai-api">OpenAI API</a>
   <a href="#cursor">Cursor</a>
   <a href="#codex">Codex</a>
+  <a href="#opencode" class="hl">OpenCode</a>
   <a href="#hermes">Hermes</a>
   <a href="#reasoning-effort">Reasoning effort</a>
   <a href="#prompt-caching">Prompt caching</a>
@@ -89,6 +163,11 @@ p{margin:8px 0}
 
 <script>
 (function(){
+  var tabs=document.querySelectorAll('.tab');
+  function show(v){
+    tabs.forEach(function(t){t.setAttribute('aria-selected', t.dataset.v===v?'true':'false')});
+    document.querySelectorAll('[data-show]').forEach(function(el){el.hidden = el.dataset.show!==v});
+    try{localStorage.setItem('oc-version',v)}catch(e){}
   }
   tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.v)})});
   try{var s=localStorage.getItem('oc-version'); if(s) show(s)}catch(e){}
