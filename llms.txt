@@ -1,0 +1,31 @@
+# engy
+
+> OpenAI-compatible inference for frontier open-source LLMs, with a cryptographic proof of correct inference on every response. Chat completions at `https://api.engy.ai/v1`, an Anthropic-compatible Messages API at `https://api.engy.ai` (no `/v1`), authenticated with `Authorization: Bearer <sk-engy-… key>`.
+
+- The live model list, with ids, prices and context limits, is `GET https://api.engy.ai/v1/models` (no key needed). Use the ids exactly as listed; some clients need a `vendor/` prefix (`engy/<id>`), see the client pages.
+- Reasoning effort is `reasoning_effort` (`none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`); engy maps each value to what the model's template understands. `none` and `minimal` turn thinking off, except on GLM-5.3 and GLM-5.3-Flash, which always think.
+
+## Clients
+
+- [OpenCode](https://engy.ai/docs/opencode.md): engy is in OpenCode's built-in provider list; `/connect`, model ids `engy/<id>`, reasoning variants, for OpenCode 1.x and 2.x
+- [Claude Code](https://engy.ai/docs/claude-code.md): `ANTHROPIC_BASE_URL` without `/v1`, context-window suffix
+- [OpenAI SDK and curl](https://engy.ai/docs/openai-api.md)
+- [Cursor](https://engy.ai/docs/cursor.md): custom model named `engy/<id>`
+- [Codex](https://engy.ai/docs/codex.md)
+- [Hermes](https://engy.ai/docs/hermes.md)
+
+## API features
+
+- [Reasoning effort](https://engy.ai/docs/reasoning-effort.md): the value each model receives for each tier, and turning thinking off
+- [Prompt caching](https://engy.ai/docs/prompt-caching.md)
+- [Image input](https://engy.ai/docs/image-input.md)
+- [Video generation](https://engy.ai/docs/video-generation.md)
+- [Raw prompts and logprobs](https://engy.ai/docs/raw-prompts.md)
+- [Data retention](https://engy.ai/docs/data-retention.md)
+
+## Optional
+
+- [Account API](https://engy.ai/api/v1/llms.txt): read-only balance, usage and model prices with an `rk-engy-…` read token
+- [Account API OpenAPI spec](https://engy.ai/api/v1/openapi.json)
+- [Pricing](https://engy.ai/pricing)
+- [Status](https://engy.ai/status)
